@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adicionar Notas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        nav {
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        nav a {
+            margin-right: 15px;
+        }
+        form {
+            max-width: 400px;
+            border: 1px solid #ddd;
+            padding: 20px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input, select {
+            width: 100%;
+            padding: 5px;
+            margin-top: 5px;
+        }
+        button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+        .sucesso {
+            color: green;
+            border: 1px solid green;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .erro {
+            color: red;
+            border: 1px solid red;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="{{ url_for('professor_home') }}">Escola Virtual</a>
+        <a href="{{ url_for('professor_home') }}">Início</a>
+        <a href="{{ url_for('logout') }}">Sair</a>
+    </nav>
+
+    <h1>Adicionar Notas</h1>
+
+    {% if mensagem %}
+        <div class="sucesso">{{ mensagem }}</div>
+    {% endif %}
+
+    {% if erro %}
+        <div class="erro">{{ erro }}</div>
+    {% endif %}
+
+    <form method="POST">
+        <label for="aluno">Aluno:</label>
+        <select name="aluno" id="aluno" required>
+            <option value="">Selecione um aluno</option>
+            {% for aluno in alunos_disponiveis %}
+                <option value="{{ aluno }}">{{ aluno }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="nota">Nota (0 a 10):</label>
+        <input type="number" name="nota" id="nota" step="0.1" min="0" max="10" required>
+
+        <button type="submit">Adicionar Nota</button>
+    </form>
+</body>
+</html>
