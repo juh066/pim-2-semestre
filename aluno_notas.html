@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minhas Notas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Minhas Notas</h1>
+        <h2>Aluno: {{ nome }}</h2>
+        
+        {% if notas %}
+            <div class="card">
+                <h3>Notas:</h3>
+                <ul class="lista">
+                    {% for nota in notas %}
+                        <li>Nota: {{ nota }}</li>
+                    {% endfor %}
+                </ul>
+                
+                <div class="resultado">
+                    <p><strong>Média:</strong> {{ media }}</p>
+                    <p><strong>Situação:</strong> {{ situacao }}</p>
+                </div>
+            </div>
+        {% else %}
+            <p class="aviso">Nenhuma nota cadastrada.</p>
+        {% endif %}
+        
+        <a href="{{ url_for('aluno_home') }}" class="btn btn-secondary">Voltar</a>
+    </div>
+</body>
+</html>
