@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Área do Professor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        nav {
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        nav a {
+            margin-right: 15px;
+        }
+        .card {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 10px 0;
+            display: inline-block;
+            width: 200px;
+        }
+        button, .card {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="{{ url_for('professor_home') }}">Escola Virtual</a>
+        <a href="{{ url_for('logout') }}">Sair</a>
+    </nav>
+
+    <h1>Área do Professor</h1>
+    <p>Bem-vindo, {{ nome }}!</p>
+
+    <div>
+        <a href="{{ url_for('professor_notas') }}" class="card">
+            <h3>Adicionar Notas</h3>
+            <p>Gerencie as notas dos alunos</p>
+        </a>
+
+        <a href="{{ url_for('professor_atividades') }}" class="card">
+            <h3>Adicionar Atividades</h3>
+            <p>Crie atividades para os alunos</p>
+        </a>
+    </div>
+
+    <hr>
+
+    <h2>Alunos Cadastrados</h2>
+    
+    {% if alunos %}
+        <ul>
+            {% for aluno in alunos %}
+                <li>
+                    <strong>{{ aluno }}</strong> - {{ notas.get(aluno, [])|length }} nota(s) | {{ atividades.get(aluno, [])|length }} atividade(s)
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Nenhum aluno cadastrado</p>
+    {% endif %}
+</body>
+</html>
