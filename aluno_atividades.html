@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minhas Atividades</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>📚 Minhas Atividades</h1>
+        <h2>Aluno: {{ nome }}</h2>
+        
+        {% if atividades %}
+            <ul class="lista">
+                {% for atividade in atividades %}
+                    <li>{{ atividade }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="aviso">Nenhuma atividade cadastrada.</p>
+        {% endif %}
+        
+        <a href="{{ url_for('aluno_home') }}" class="btn btn-secondary">Voltar</a>
+    </div>
+</body>
+</html>
