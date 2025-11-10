@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Área do Aluno</title>
+<style>
+body { background-color: #fff8e1; font-family: 'Comic Sans MS'; text-align: center; }
+table { margin: 0 auto; border-collapse: collapse; }
+td, th { padding: 8px; border: 1px solid #fbc02d; }
+h2 { color: #f57f17; }
+</style>
+</head>
+<body>
+<h1>🎀 Bem-vindo(a), {{ nome }} 🎀</h1>
+<h2>Suas notas</h2>
+<table>
+<tr><th>Nota</th></tr>
+{% for n in notas %}
+<tr><td>{{ n }}</td></tr>
+{% endfor %}
+</table>
+<p><b>Média:</b> {{ media }}</p>
+<p><b>Situação:</b> {{ situacao }}</p>
+<a href="{{ url_for('logout') }}">Sair</a>
+</body>
+</html>
