@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Adicionar Notas</title>
+<!-- codigo de interface da area de notas do professor -->
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -59,6 +60,7 @@
 
     <h1>Adicionar Notas</h1>
 
+    <!-- condicoes de sucesso e erro ao adicionar nota ao aluno -->
     {% if mensagem %}
         <div class="sucesso">{{ mensagem }}</div>
     {% endif %}
@@ -67,6 +69,7 @@
         <div class="erro">{{ erro }}</div>
     {% endif %}
 
+    <!-- opcao de selecionar aluno -->
     <form method="POST">
         <label for="aluno">Aluno:</label>
         <select name="aluno" id="aluno" required>
@@ -75,7 +78,7 @@
                 <option value="{{ aluno }}">{{ aluno }}</option>
             {% endfor %}
         </select>
-
+<!-- opcao de adicionar as notas de 0 a 10 -->
         <label for="nota">Nota (0 a 10):</label>
         <input type="number" name="nota" id="nota" step="0.1" min="0" max="10" required>
 
