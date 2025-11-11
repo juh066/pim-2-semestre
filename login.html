@@ -1,14 +1,17 @@
 {% extends "base.html" %}
 {% block title %}Login{% endblock %}
 {% block content %}
+<!-- Login -->
 <h2>Login</h2>
 <form method="POST">
   <div class="mb-3">
     <label class="form-label">UsuÃ¡rio:</label>
+  <!-- Pede o nome do usuario -->
     <input type="text" name="usuario" class="form-control" required>
   </div>
   <div class="mb-3">
     <label class="form-label">Senha:</label>
+  <!-- Pede a senha -->
     <input type="password" name="senha" class="form-control" required>
   </div>
   {% if erro %}
