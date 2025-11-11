@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Adicionar Atividades</title>
+<!-- codigo de interface da area de atividades do professor -->
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -52,11 +53,12 @@
 </head>
 <body>
     <nav>
+<!-- Opcoes de voltar ao menu do site, voltar ao inicio ou sair da conta logada -->
         <a href="{{ url_for('professor_home') }}">Escola Virtual</a>
         <a href="{{ url_for('professor_home') }}">Início</a>
         <a href="{{ url_for('logout') }}">Sair</a>
     </nav>
-
+<!-- Opcao de Adicionar atividades -->
     <h1>Adicionar Atividades</h1>
 
     {% if mensagem %}
@@ -67,6 +69,7 @@
         <div class="erro">{{ erro }}</div>
     {% endif %}
 
+<!-- Opcoes de selecionar o aluno -->
     <form method="POST">
         <label for="aluno">Aluno:</label>
         <select name="aluno" id="aluno" required>
@@ -75,7 +78,7 @@
                 <option value="{{ aluno }}">{{ aluno }}</option>
             {% endfor %}
         </select>
-
+<!-- Local de descrever a atividade do aluno -->
         <label for="atividade">Descrição da Atividade:</label>
         <textarea name="atividade" id="atividade" rows="5" required></textarea>
 
