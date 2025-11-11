@@ -2,8 +2,10 @@
 {% block title %}Home{% endblock %}
 {% block content %}
 <div class="text-center mt-5">
+  <!-- interface do menu do sistema escolar -->
   <h1>Bem-vindo ao Sistema Escolar 🧮</h1>
   {% if not session.get('usuario') %}
+  <!-- opcoes de login e cadastro -->
     <p class="mt-3">Acesse sua conta ou cadastre-se:</p>
     <a href="{{ url_for('login') }}" class="btn btn-primary">Login</a>
     <a href="{{ url_for('cadastro') }}" class="btn btn-success">Cadastro</a>
