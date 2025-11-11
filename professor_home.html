@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- codigo de interface da area deo menu do professor -->
     <title>Área do Professor</title>
     <style>
         body {
@@ -38,12 +39,13 @@
     <h1>Área do Professor</h1>
     <p>Bem-vindo, {{ nome }}!</p>
 
+    <!-- parte do menu onde o professor cadastrado podera escolher adicionar notas ou gerenciar notas -->
     <div>
         <a href="{{ url_for('professor_notas') }}" class="card">
             <h3>Adicionar Notas</h3>
             <p>Gerencie as notas dos alunos</p>
         </a>
-
+     <!-- parte do menu onde o professor cadastrado podera escolher adicionar atividades -->
         <a href="{{ url_for('professor_atividades') }}" class="card">
             <h3>Adicionar Atividades</h3>
             <p>Crie atividades para os alunos</p>
@@ -51,7 +53,7 @@
     </div>
 
     <hr>
-
+ <!-- mostra a quantidade de alunos cadastrados, quantidade de notas e atividade de cada aluno -->
     <h2>Alunos Cadastrados</h2>
     
     {% if alunos %}
