@@ -1,19 +1,23 @@
 {% extends "base.html" %}
 {% block title %}Cadastro{% endblock %}
 {% block content %}
+<!-- Cadastro --> 
 <h2>Cadastro</h2>
 <form method="POST">
   <div class="mb-3">
     <label class="form-label">UsuÃ¡rio:</label>
+  <!-- Pede o nome de usuario -->
     <input type="text" name="usuario" class="form-control" required>
   </div>
   <div class="mb-3">
     <label class="form-label">Senha:</label>
+  <!-- Pede a senha -->
     <input type="password" name="senha" class="form-control" required>
   </div>
   <div class="mb-3">
     <label class="form-label">Tipo:</label>
     <select name="tipo" class="form-select" required>
+    <!-- Duas opcoes de selecao = aluno ou professor -->
       <option value="aluno">Aluno</option>
       <option value="professor">Professor</option>
     </select>
