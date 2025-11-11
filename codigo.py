@@ -1,10 +1,11 @@
 import json
 import os
 
-# Arquivo do banco de dados JSON
+# Nome do arquivo onde vamos guardar todos os dados (professores, alunos e notas)
 DB_FILE = "sistema_academico.json"
 
-# Disciplinas fixas do sistema
+# Lista com as 5 disciplinas que existem no sistema
+# Essas disciplinas são fixas e não podem ser alteradas pelo usuário
 DISCIPLINAS = [
     "Matemática",
     "Engenharia de Software",
@@ -13,84 +14,95 @@ DISCIPLINAS = [
     "Redes de Computadores"
 ]
 
+# ========== FUNÇÕES AUXILIARES (ajudam outras funções) ==========
+
 def inicializar_bd():
-    """Cria o arquivo JSON se não existir"""
+
     if not os.path.exists(DB_FILE):
+        # Cria a estrutura inicial: 3 para guardar os dados
         dados_iniciais = {
-            "professores": {},
-            "alunos": {},
-            "notas": {}
+            "professores": {}, 
+            "alunos": {},  
+            "notas": {}         
         }
         salvar_dados(dados_iniciais)
 
 def carregar_dados():
-    """Carrega os dados do arquivo JSON"""
+
     try:
         with open(DB_FILE, 'r', encoding='utf-8') as f:
             return json.load(f)
     except:
+        # Se não conseguir ler, começa com tudo vazio
         return {"professores": {}, "alunos": {}, "notas": {}}
 
 def salvar_dados(dados):
-    """Salva os dados no arquivo JSON"""
+
     with open(DB_FILE, 'w', encoding='utf-8') as f:
         json.dump(dados, f, ensure_ascii=False, indent=4)
 
 def limpar_tela():
-    """Limpa a tela do console"""
+
     os.system('cls' if os.name == 'nt' else 'clear')
 
 def verificar_professor():
-    """Verifica se um professor existe e retorna seu ID"""
+
     dados = carregar_dados()
     
     while True:
         print("\n--- Autenticação de Professor ---")
         id_prof = input("ID do Professor (ou 'sair' para cancelar): ").strip()
         
+        # Se digitar 'sair', cancela a operação
         if id_prof.lower() == 'sair':
             return None
         
+        # Verifica se o ID existe na lista de professores
         if id_prof in dados["professores"]:
             print(f"✓ Autenticado como: {dados['professores'][id_prof]['nome']}")
             return id_prof
         else:
             print("✗ Professor não encontrado! Tente novamente.")
 
-# ==================== FUNÇÕES DE CADASTRO ====================
+# ========== FUNÇÕES DE CADASTRO (adicionar coisas novas) ==========
 
 def cadastrar_professor():
-    """Cadastra um novo professor no sistema"""
+
     dados = carregar_dados()
     
     while True:
         print("\n=== CADASTRAR PROFESSOR ===")
         id_prof = input("ID do Professor (ou 'sair' para cancelar): ").strip()
         
+        # Permite cancelar a qualquer momento
         if id_prof.lower() == 'sair':
             print("Operação cancelada.")
             return
         
+        # Validações: não pode ser vazio
         if not id_prof:
             print("✗ ID não pode ser vazio!")
             continue
         
+        # Não pode cadastrar ID duplicado
         if id_prof in dados["professores"]:
             print("✗ Já existe um professor com este ID!")
             continue
         
+        # Pede o nome do professor
         nome = input("Nome do Professor: ").strip()
         if not nome:
             print("✗ Nome não pode ser vazio!")
             continue
         
+        # Salva o professor e encerra o loop
         dados["professores"][id_prof] = {"nome": nome}
         salvar_dados(dados)
         print("✓ Professor cadastrado com sucesso!")
         break
 
 def cadastrar_aluno():
-    """Cadastra um novo aluno no sistema"""
+
     dados = carregar_dados()
     
     while True:
@@ -101,6 +113,7 @@ def cadastrar_aluno():
             print("Operação cancelada.")
             return
         
+        # Validações básicas
         if not matricula:
             print("✗ Matrícula não pode ser vazia!")
             continue
@@ -109,6 +122,7 @@ def cadastrar_aluno():
             print("✗ Já existe um aluno com esta matrícula!")
             continue
         
+        # Coleta os outros dados do aluno
         nome = input("Nome do Aluno: ").strip()
         if not nome:
             print("✗ Nome não pode ser vazio!")
@@ -117,6 +131,7 @@ def cadastrar_aluno():
         endereco = input("Endereço: ").strip()
         cep = input("CEP: ").strip()
         
+        # Salva todos os dados do aluno de uma vez
         dados["alunos"][matricula] = {
             "nome": nome,
             "endereco": endereco,
@@ -127,7 +142,8 @@ def cadastrar_aluno():
         break
 
 def cadastrar_nota():
-    """Cadastra uma nota (apenas professores podem fazer isso)"""
+
+    # Primeiro, precisa autenticar o professor
     id_prof = verificar_professor()
     if not id_prof:
         print("Operação cancelada.")
@@ -143,11 +159,15 @@ def cadastrar_nota():
             print("Operação cancelada.")
             return
         
+        # Verifica se o aluno existe
         if matricula not in dados["alunos"]:
             print("✗ Aluno não encontrado!")
             continue
         
+        # Mostra o nome do aluno para confirmar
         print(f"\nAluno: {dados['alunos'][matricula]['nome']}")
+        
+        # Mostra as disciplinas numeradas para escolher
         print("\n--- Disciplinas Disponíveis ---")
         for i, disc in enumerate(DISCIPLINAS, 1):
             print(f"{i}. {disc}")
@@ -158,6 +178,7 @@ def cadastrar_nota():
             print("Operação cancelada.")
             return
         
+        # Converte o número escolhido para o nome da disciplina
         try:
             idx = int(escolha) - 1
             if idx < 0 or idx >= len(DISCIPLINAS):
@@ -168,6 +189,7 @@ def cadastrar_nota():
             print("✗ Digite um número válido!")
             continue
         
+        # Pede a nota e valida se está entre 0 e 10
         try:
             nota = float(input("Nota (0-10): ").strip())
             if nota < 0 or nota > 10:
@@ -177,25 +199,28 @@ def cadastrar_nota():
             print("✗ Nota inválida!")
             continue
         
+        # Cria uma chave única juntando matrícula e disciplina
+        # Exemplo: "12345|Matemática"
         chave = f"{matricula}|{disciplina}"
         dados["notas"][chave] = {
             "matricula": matricula,
             "disciplina": disciplina,
             "nota": nota,
-            "id_prof": id_prof
+            "id_prof": id_prof  # Guarda quem lançou a nota
         }
         salvar_dados(dados)
         print("✓ Nota cadastrada com sucesso!")
         break
 
-# ==================== FUNÇÕES DE CONSULTA ====================
+# ========== FUNÇÕES DE CONSULTA (ver o que está salvo) ==========
 
 def consultar_professores():
-    """Lista todos os professores cadastrados"""
+
     dados = carregar_dados()
     
     print("\n=== PROFESSORES CADASTRADOS ===")
     if dados["professores"]:
+        # sorted() organiza em ordem alfabética por ID
         for id_prof, info in sorted(dados["professores"].items()):
             print(f"ID: {id_prof} | Nome: {info['nome']}")
     else:
@@ -204,7 +229,7 @@ def consultar_professores():
     input("\nPressione ENTER para continuar...")
 
 def consultar_disciplinas():
-    """Lista todas as disciplinas disponíveis"""
+
     print("\n=== DISCIPLINAS DISPONÍVEIS ===")
     for i, disc in enumerate(DISCIPLINAS, 1):
         print(f"{i}. {disc}")
@@ -212,7 +237,7 @@ def consultar_disciplinas():
     input("\nPressione ENTER para continuar...")
 
 def consultar_alunos():
-    """Lista todos os alunos cadastrados"""
+
     dados = carregar_dados()
     
     print("\n=== ALUNOS CADASTRADOS ===")
@@ -226,7 +251,8 @@ def consultar_alunos():
     input("\nPressione ENTER para continuar...")
 
 def consultar_notas():
-    """Lista todas as notas (apenas professores podem fazer isso)"""
+
+    # Precisa estar autenticado como professor
     id_prof = verificar_professor()
     if not id_prof:
         print("Operação cancelada.")
@@ -237,6 +263,7 @@ def consultar_notas():
     print("\n=== NOTAS CADASTRADAS ===")
     if dados["notas"]:
         for chave, info in sorted(dados["notas"].items()):
+            # Busca o nome do aluno e do professor para mostrar
             aluno_nome = dados["alunos"].get(info['matricula'], {}).get('nome', 'Desconhecido')
             prof_nome = dados["professores"].get(info['id_prof'], {}).get('nome', 'Desconhecido')
             print(f"Aluno: {aluno_nome} | Disciplina: {info['disciplina']} | "
@@ -246,10 +273,10 @@ def consultar_notas():
     
     input("\nPressione ENTER para continuar...")
 
-# ==================== FUNÇÕES DE ALTERAÇÃO ====================
+# ========== FUNÇÕES DE ALTERAÇÃO (mudar dados existentes) ==========
 
 def alterar_professor():
-    """Altera os dados de um professor"""
+
     dados = carregar_dados()
     
     while True:
@@ -260,10 +287,12 @@ def alterar_professor():
             print("Operação cancelada.")
             return
         
+        # Verifica se o professor existe
         if id_prof not in dados["professores"]:
             print("✗ Professor não encontrado!")
             continue
         
+        # Mostra o nome atual e pede o novo
         print(f"Professor atual: {dados['professores'][id_prof]['nome']}")
         novo_nome = input("Novo nome: ").strip()
         
@@ -271,13 +300,14 @@ def alterar_professor():
             print("✗ Nome não pode ser vazio!")
             continue
         
+        # Atualiza só o nome, mantendo o ID
         dados["professores"][id_prof]["nome"] = novo_nome
         salvar_dados(dados)
         print("✓ Professor alterado com sucesso!")
         break
 
 def alterar_aluno():
-    """Altera os dados de um aluno"""
+
     dados = carregar_dados()
     
     while True:
@@ -292,9 +322,11 @@ def alterar_aluno():
             print("✗ Aluno não encontrado!")
             continue
         
+        # Mostra os dados atuais
         print(f"\nAluno atual: {dados['alunos'][matricula]['nome']}")
-        nome = input("Novo nome: ").strip()
         
+        # Pede todos os novos dados
+        nome = input("Novo nome: ").strip()
         if not nome:
             print("✗ Nome não pode ser vazio!")
             continue
@@ -302,6 +334,7 @@ def alterar_aluno():
         endereco = input("Novo endereço: ").strip()
         cep = input("Novo CEP: ").strip()
         
+        # Substitui todos os dados de uma vez
         dados["alunos"][matricula] = {
             "nome": nome,
             "endereco": endereco,
@@ -312,7 +345,8 @@ def alterar_aluno():
         break
 
 def alterar_nota():
-    """Altera uma nota (apenas professores podem fazer isso)"""
+
+    # Autenticação obrigatória
     id_prof = verificar_professor()
     if not id_prof:
         print("Operação cancelada.")
@@ -333,6 +367,8 @@ def alterar_nota():
             continue
         
         print(f"\nAluno: {dados['alunos'][matricula]['nome']}")
+        
+        # Mostra as disciplinas para escolher
         print("\n--- Disciplinas Disponíveis ---")
         for i, disc in enumerate(DISCIPLINAS, 1):
             print(f"{i}. {disc}")
@@ -343,6 +379,7 @@ def alterar_nota():
             print("Operação cancelada.")
             return
         
+        # Converte a escolha para o nome da disciplina
         try:
             idx = int(escolha) - 1
             if idx < 0 or idx >= len(DISCIPLINAS):
@@ -353,14 +390,18 @@ def alterar_nota():
             print("✗ Digite um número válido!")
             continue
         
+        # Monta a chave para buscar a nota
         chave = f"{matricula}|{disciplina}"
         
+        # Verifica se já existe uma nota cadastrada
         if chave not in dados["notas"]:
             print("✗ Nota não encontrada para esta combinação!")
             continue
         
+        # Mostra a nota atual
         print(f"Nota atual: {dados['notas'][chave]['nota']:.1f}")
         
+        # Pede a nova nota
         try:
             nova_nota = float(input("Nova nota (0-10): ").strip())
             if nova_nota < 0 or nova_nota > 10:
@@ -370,16 +411,17 @@ def alterar_nota():
             print("✗ Nota inválida!")
             continue
         
+        # Atualiza a nota e registra quem fez a alteração
         dados["notas"][chave]["nota"] = nova_nota
         dados["notas"][chave]["id_prof"] = id_prof
         salvar_dados(dados)
         print("✓ Nota alterada com sucesso!")
         break
 
-# ==================== FUNÇÕES DE EXCLUSÃO ====================
+# ========== FUNÇÕES DE EXCLUSÃO (apagar dados) ==========
 
 def excluir_professor():
-    """Exclui um professor do sistema"""
+
     dados = carregar_dados()
     
     while True:
@@ -394,6 +436,7 @@ def excluir_professor():
             print("✗ Professor não encontrado!")
             continue
         
+        # Mostra quem vai ser excluído e pede confirmação
         print(f"Professor: {dados['professores'][id_prof]['nome']}")
         confirmacao = input("Confirma a exclusão? (s/n): ").strip().lower()
         
@@ -406,7 +449,7 @@ def excluir_professor():
         break
 
 def excluir_aluno():
-    """Exclui um aluno do sistema"""
+
     dados = carregar_dados()
     
     while True:
@@ -425,11 +468,16 @@ def excluir_aluno():
         confirmacao = input("Confirma a exclusão? (s/n): ").strip().lower()
         
         if confirmacao == 's':
+            # Remove o aluno
             del dados["alunos"][matricula]
-            # Remove todas as notas do aluno
+            
+            # Remove todas as notas relacionadas a esse aluno
+            # Primeiro faz uma lista das chaves que devem ser removidas
             notas_para_remover = [k for k in dados["notas"] if dados["notas"][k]["matricula"] == matricula]
+            # Depois remove cada uma
             for k in notas_para_remover:
                 del dados["notas"][k]
+            
             salvar_dados(dados)
             print("✓ Aluno excluído com sucesso!")
         else:
@@ -437,7 +485,8 @@ def excluir_aluno():
         break
 
 def excluir_nota():
-    """Exclui uma nota (apenas professores podem fazer isso)"""
+
+    # Precisa estar autenticado como professor
     id_prof = verificar_professor()
     if not id_prof:
         print("Operação cancelada.")
@@ -458,6 +507,8 @@ def excluir_nota():
             continue
         
         print(f"\nAluno: {dados['alunos'][matricula]['nome']}")
+        
+        # Lista as disciplinas
         print("\n--- Disciplinas Disponíveis ---")
         for i, disc in enumerate(DISCIPLINAS, 1):
             print(f"{i}. {disc}")
@@ -468,6 +519,7 @@ def excluir_nota():
             print("Operação cancelada.")
             return
         
+        # Converte a escolha
         try:
             idx = int(escolha) - 1
             if idx < 0 or idx >= len(DISCIPLINAS):
@@ -478,12 +530,15 @@ def excluir_nota():
             print("✗ Digite um número válido!")
             continue
         
+        # Monta a chave da nota
         chave = f"{matricula}|{disciplina}"
         
+        # Verifica se a nota existe
         if chave not in dados["notas"]:
             print("✗ Nota não encontrada para esta combinação!")
             continue
         
+        # Mostra a nota e pede confirmação
         print(f"Nota atual: {dados['notas'][chave]['nota']:.1f}")
         confirmacao = input("Confirma a exclusão? (s/n): ").strip().lower()
         
@@ -495,26 +550,33 @@ def excluir_nota():
             print("Exclusão cancelada.")
         break
 
-# ==================== MENU PRINCIPAL ====================
+# ========== MENU PRINCIPAL (coração do programa) ==========
 
 def menu():
-    """Menu principal do sistema"""
+
+    # Garante que o arquivo existe antes de começar
     inicializar_bd()
     
+    # Loop infinito: só sai quando o usuário escolher "0. Sair"
     while True:
         limpar_tela()
+        
+        # Cabeçalho do sistema
         print("╔═══════════════════════════════════════╗")
         print("║   SISTEMA ACADÊMICO - VERSÃO 2.0     ║")
         print("╚═══════════════════════════════════════╝")
-        print("\n1. Cadastro")
-        print("2. Consulta")
-        print("3. Alteração")
-        print("4. Exclusão")
+        
+        # Menu principal 
+        print("\n1. Cadastro")    
+        print("2. Consulta")      
+        print("3. Alteração")     
+        print("4. Exclusão")      
         print("0. Sair")
         print("\n" + "="*40)
         
         opcao = input("Escolha uma opção: ").strip()
         
+        # ===== CADASTRO =====
         if opcao == "1":
             limpar_tela()
             print("═══ MENU DE CADASTRO ═══")
@@ -524,6 +586,7 @@ def menu():
             print("0. Voltar")
             escolha = input("\nEscolha uma opção: ").strip()
             
+            # Chama a função correspondente
             if escolha == "1":
                 cadastrar_professor()
             elif escolha == "2":
@@ -531,11 +594,12 @@ def menu():
             elif escolha == "3":
                 cadastrar_nota()
             elif escolha == "0":
-                continue
+                continue  # Volta pro menu principal
             else:
                 print("✗ Opção inválida!")
                 input("\nPressione ENTER para continuar...")
         
+        # ===== CONSULTA =====
         elif opcao == "2":
             limpar_tela()
             print("═══ MENU DE CONSULTA ═══")
@@ -560,6 +624,7 @@ def menu():
                 print("✗ Opção inválida!")
                 input("\nPressione ENTER para continuar...")
         
+        # ===== ALTERAÇÃO =====
         elif opcao == "3":
             limpar_tela()
             print("═══ MENU DE ALTERAÇÃO ═══")
@@ -581,6 +646,7 @@ def menu():
                 print("✗ Opção inválida!")
                 input("\nPressione ENTER para continuar...")
         
+        # ===== EXCLUSÃO =====
         elif opcao == "4":
             limpar_tela()
             print("═══ MENU DE EXCLUSÃO ═══")
@@ -602,15 +668,17 @@ def menu():
                 print("✗ Opção inválida!")
                 input("\nPressione ENTER para continuar...")
         
+        # ===== SAIR DO SISTEMA =====
         elif opcao == "0":
             print("\n✓ Encerrando o sistema...")
             print("Até logo!")
-            break
+            break  # Sai do loop e encerra o programa
         
+        # ===== OPÇÃO INVÁLIDA =====
         else:
             print("✗ Opção inválida!")
             input("\nPressione ENTER para continuar...")
 
-# Executa o programa
+# ========== PONTO DE ENTRADA DO PROGRAMA ==========
 if __name__ == "__main__":
     menu()
