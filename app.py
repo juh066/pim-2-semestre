@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, redirect, session, url_for
 app = Flask(__name__)
 app.secret_key = "segredo123" 
 
-# "Banco de dados" em memória (dados de exemplo)
+# "Banco de dados" em memória (dados de exemplo salvos no site)
 usuarios = {
     "aluno1": {"senha": "1234", "tipo": "aluno"},
     "aluno2": {"senha": "4321", "tipo": "aluno"},
@@ -52,7 +52,7 @@ def login():
         usuario = request.form.get("usuario", "").strip()
         senha = request.form.get("senha", "")
 
-        # Validação básica
+        # Validação básica (login)
         if not usuario or not senha:
             return render_template("login.html", erro="Preencha todos os campos")
 
@@ -77,6 +77,7 @@ def logout():
 
 
 @app.route("/cadastro", methods=["GET", "POST"])
+#Cadastro
 def cadastro():
     if request.method == "POST":
         usuario = request.form.get("usuario", "").strip()
@@ -110,7 +111,7 @@ def cadastro():
 @app.route("/aluno/home")
 def aluno_home():
     if "usuario" not in session:
-        return redirect(url_for("login"))
+        return redirect(url_for("login")) #se o usuario nao estar cadastado, retornará ao login)
     
     usuario = session["usuario"]
     if usuario not in usuarios or usuarios[usuario]["tipo"] != "aluno":
@@ -122,7 +123,7 @@ def aluno_home():
 @app.route("/aluno/atividades")
 def aluno_atividades():
     if "usuario" not in session:
-        return redirect(url_for("login"))
+        return redirect(url_for("login")) 
     
     usuario = session["usuario"]
     if usuario not in usuarios or usuarios[usuario]["tipo"] != "aluno":
@@ -141,8 +142,8 @@ def aluno_notas():
         return redirect(url_for("login"))
 
     notas_aluno = notas.get(usuario, [])
-    media = round(sum(notas_aluno) / len(notas_aluno), 2) if notas_aluno else 0
-    situacao = "Aprovado 🩵" if media >= 7 else "Reprovado 💔"
+    media = round(sum(notas_aluno) / len(notas_aluno), 2) if notas_aluno else 0 
+    situacao = "Aprovado 🩵" if media >= 7 else "Reprovado 💔" #situacao da media do aluno calculado
 
     return render_template(
         "aluno_notas.html",
@@ -159,7 +160,7 @@ def aluno_notas():
 @app.route("/professor/home")
 def professor_home():
     if "usuario" not in session:
-        return redirect(url_for("login"))
+        return redirect(url_for("login")) #se o professor nao estar cadastado, retornará ao login)
     
     usuario = session["usuario"]
     if usuario not in usuarios or usuarios[usuario]["tipo"] != "professor":
@@ -264,3 +265,4 @@ def professor_atividades():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
