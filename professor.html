@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Área do Professor{% endblock %}
 {% block content %}
+<!-- Interface do menu do professor -->
 <h2>Bem-vindo, Professor {{ nome }}</h2>
 <p>Selecione uma ação:</p>
 <a href="{{ url_for('professor_notas') }}" class="btn btn-primary">Gerenciar Notas</a>
