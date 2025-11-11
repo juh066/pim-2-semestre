@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Área do Aluno</title>
+  <!-- Interface da area do aluno -->
 <style> 
 body { background-color: #fff8e1; font-family: 'Comic Sans MS'; text-align: center; }
 table { margin: 0 auto; border-collapse: collapse; }
@@ -12,6 +13,7 @@ h2 { color: #f57f17; }
 </head>
 <body>
 <h1>🎀 Bem-vindo(a), {{ nome }} 🎀</h1>
+  <!-- notas do aluno -->
 <h2>Suas notas</h2>
 <table>
 <tr><th>Nota</th></tr>
@@ -19,7 +21,9 @@ h2 { color: #f57f17; }
 <tr><td>{{ n }}</td></tr>
 {% endfor %}
 </table>
-<p><b>Média:</b> {{ media }}</p>
+  <!-- media do aluno -->
+<p><b>Média:</b> {{ media }}</p> 
+  <!-- situacao do aluno -->
 <p><b>Situação:</b> {{ situacao }}</p>
 <a href="{{ url_for('logout') }}">Sair</a>
 </body>
