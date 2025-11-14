@@ -1,37 +1,61 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minhas Notas</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-    <div class="container">
-<!-- Notas do aluno cadastrado -->
-        <h1>📊 Minhas Notas</h1>
-        <h2>Aluno: {{ nome }}</h2>
-        
-        {% if notas %}
-            <div class="card">
-                <h3>Notas:</h3>
-                <ul class="lista">
-                    {% for nota in notas %}
-                        <li>Nota: {{ nota }}</li>
-                    {% endfor %}
-                </ul>
-                
-                <div class="resultado">
-                    <p><strong>Média:</strong> {{ media }}</p>
-                    <p><strong>Situação:</strong> {{ situacao }}</p>
-                </div>
-            </div>
-        {% else %}
-<!-- Se nao houver nenhuma nota cadastrada -->
-            <p class="aviso">Nenhuma nota cadastrada.</p>
-        {% endif %}
-        
-        <a href="{{ url_for('aluno_home') }}" class="btn btn-secondary">Voltar</a>
-    </div>
-</body>
-</html>
+{% extends "base.html" %}
+{% block title %}Notas do Aluno{% endblock %}
+
+{% block content %}
+<style>
+table {
+    margin: 20px auto;
+    border-collapse: collapse;
+    background-color: #fff3e0;
+    border-radius: 10px;
+    overflow: hidden;
+}
+th, td {
+    padding: 10px 15px;
+    border: 1px solid #fbc02d;
+}
+h2 {
+    color: #f57f17;
+    margin-top: 30px;
+}
+h4, h5 {
+    color: #f57f17;
+    margin-top: 15px;
+}
+span.text-primary {
+    color: #f57f17 !important;
+    font-weight: bold;
+}
+td[colspan] {
+    text-align: center;
+    font-style: italic;
+    color: #f57f17;
+}
+</style>
+
+<h2>Notas de {{ nome }}</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Nota</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for n in notas %}
+      <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ n }}</td>
+      </tr>
+    {% else %}
+      <tr>
+        <td colspan="2">Nenhuma nota registrada.</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h4>Média: <span class="text-primary">{{ media }}</span></h4>
+<h5>Situação: <strong>{{ situacao }}</strong></h5>
+{% endblock %}
