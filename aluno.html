@@ -3,17 +3,56 @@
 <head>
 <meta charset="UTF-8">
 <title>Área do Aluno</title>
-  <!-- Interface da area do aluno -->
-<style> 
-body { background-color: #fff8e1; font-family: 'Comic Sans MS'; text-align: center; }
-table { margin: 0 auto; border-collapse: collapse; }
-td, th { padding: 8px; border: 1px solid #fbc02d; }
-h2 { color: #f57f17; }
+<style>
+body { 
+    background-color: #fff8e1; 
+    font-family: 'Comic Sans MS'; 
+    text-align: center; 
+    margin: 0;
+    padding: 0;
+}
+h1 { 
+    color: #f57f17; 
+    margin-top: 30px; 
+}
+h2 { 
+    color: #f57f17; 
+    margin-top: 20px; 
+}
+table { 
+    margin: 20px auto; 
+    border-collapse: collapse; 
+    background-color: #fff3e0;
+    border-radius: 10px;
+    overflow: hidden;
+}
+td, th { 
+    padding: 10px 15px; 
+    border: 1px solid #fbc02d; 
+}
+p { 
+    font-weight: bold; 
+    color: #f57f17; 
+    margin: 10px 0; 
+}
+a { 
+    display: inline-block; 
+    text-decoration: none; 
+    color: white; 
+    background-color: #fbc02d; 
+    padding: 8px 20px; 
+    border-radius: 10px; 
+    margin-top: 15px;
+    font-weight: bold;
+}
+a:hover { 
+    background-color: #f57f17; 
+}
 </style>
 </head>
 <body>
 <h1>🎀 Bem-vindo(a), {{ nome }} 🎀</h1>
-  <!-- notas do aluno -->
+
 <h2>Suas notas</h2>
 <table>
 <tr><th>Nota</th></tr>
@@ -21,10 +60,10 @@ h2 { color: #f57f17; }
 <tr><td>{{ n }}</td></tr>
 {% endfor %}
 </table>
-  <!-- media do aluno -->
-<p><b>Média:</b> {{ media }}</p> 
-  <!-- situacao do aluno -->
+
+<p><b>Média:</b> {{ media }}</p>
 <p><b>Situação:</b> {{ situacao }}</p>
+
 <a href="{{ url_for('logout') }}">Sair</a>
 </body>
 </html>
