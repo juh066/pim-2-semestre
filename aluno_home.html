@@ -1,22 +1,48 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- Home do aluno -->
-    <title>Área do Aluno</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-    <div class="container">
-        <h1>👨‍🎓 Área do Aluno</h1>
-        <h2>Olá, {{ nome }}!</h2>
-        
-        <nav class="menu">
-            <a href="{{ url_for('aluno_notas') }}" class="btn">📊 Minhas Notas</a>
-            <a href="{{ url_for('aluno_atividades') }}" class="btn">📚 Minhas Atividades</a>
-            <a href="{{ url_for('logout') }}" class="btn btn-secondary">Sair</a>
-        </nav>
-    </div>
-</body>
-</html>
+{% extends "base.html" %}
+{% block title %}Área do Aluno{% endblock %}
+
+{% block content %}
+<style>
+body {
+    background-color: #fff8e1;
+    font-family: 'Comic Sans MS';
+    text-align: center;
+}
+h2 {
+    color: #f57f17;
+    margin-top: 30px;
+}
+p {
+    color: #f57f17;
+    font-weight: bold;
+    margin: 15px 0;
+}
+a.btn {
+    display: inline-block;
+    text-decoration: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    margin: 10px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+a.btn-info {
+    background-color: #fbc02d;
+}
+a.btn-info:hover {
+    background-color: #f57f17;
+}
+a.btn-primary {
+    background-color: #fbc02d;
+}
+a.btn-primary:hover {
+    background-color: #f57f17;
+}
+</style>
+
+<h2>Bem-vindo, {{ nome }} 👋</h2>
+<p>Escolha uma opção abaixo:</p>
+<a href="{{ url_for('aluno_atividades') }}" class="btn btn-info">Atividades</a>
+<a href="{{ url_for('aluno_notas') }}" class="btn btn-primary">Notas e Média</a>
+{% endblock %}
