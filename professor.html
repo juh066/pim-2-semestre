@@ -1,9 +1,82 @@
-{% extends "base.html" %}
-{% block title %}Área do Professor{% endblock %}
-{% block content %}
-<!-- Interface do menu do professor -->
-<h2>Bem-vindo, Professor {{ nome }}</h2>
-<p>Selecione uma ação:</p>
-<a href="{{ url_for('professor_notas') }}" class="btn btn-primary">Gerenciar Notas</a>
-<a href="{{ url_for('professor_atividades') }}" class="btn btn-success">Gerenciar Atividades</a>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Área do Professor</title>
+<style>
+body { 
+    background-color: #fff8e1; 
+    font-family: 'Comic Sans MS'; 
+    text-align: center; 
+}
+form { 
+    display: inline-block; 
+    text-align: left; 
+    background-color: #fff3e0;
+    padding: 20px; 
+    border: 2px solid #fbc02d; 
+    border-radius: 10px; 
+    margin-top: 20px;
+}
+input { 
+    padding: 5px; 
+    margin: 5px 0; 
+    width: 100%; 
+    border: 1px solid #fbc02d; 
+    border-radius: 5px;
+}
+button { 
+    background-color: #fbc02d; 
+    color: white; 
+    border: none; 
+    padding: 8px 15px; 
+    cursor: pointer; 
+    font-weight: bold;
+    border-radius: 10px;
+}
+button:hover { background-color: #f57f17; }
+table { 
+    margin: 20px auto; 
+    border-collapse: collapse; 
+    width: 60%;
+}
+td, th { 
+    border: 1px solid #fbc02d; 
+    padding: 8px; 
+}
+h1 { color: #f57f17; }
+h2 { color: #f57f17; margin-top: 30px; }
+a { 
+    display: inline-block; 
+    margin-top: 20px; 
+    text-decoration: none; 
+    color: white; 
+    background-color: #fbc02d; 
+    padding: 8px 15px; 
+    border-radius: 10px;
+}
+a:hover { background-color: #f57f17; }
+</style>
+</head>
+<body>
+
+<h1>🎀 Área do Professor 🎀</h1>
+
+<form method="POST">
+    <input type="text" name="aluno" placeholder="Nome do aluno" required>
+    <input type="number" name="nota" placeholder="Nota" step="0.1" required>
+    <button type="submit">Adicionar Nota</button>
+</form>
+
+<h2>Notas dos Alunos</h2>
+<table>
+<tr><th>Aluno</th><th>Notas</th></tr>
+{% for aluno, n in notas.items() %}
+<tr><td>{{ aluno }}</td><td>{{ n }}</td></tr>
+{% endfor %}
+</table>
+
+<a href="{{ url_for('logout') }}">Sair</a>
+
+</body>
+</html>
