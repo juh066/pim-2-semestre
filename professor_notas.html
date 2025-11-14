@@ -1,88 +1,90 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adicionar Notas</title>
-<!-- codigo de interface da area de notas do professor -->
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        nav {
-            border-bottom: 1px solid #ccc;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-        }
-        nav a {
-            margin-right: 15px;
-        }
-        form {
-            max-width: 400px;
-            border: 1px solid #ddd;
-            padding: 20px;
-        }
-        label {
-            display: block;
-            margin-top: 10px;
-        }
-        input, select {
-            width: 100%;
-            padding: 5px;
-            margin-top: 5px;
-        }
-        button {
-            margin-top: 15px;
-            padding: 10px 20px;
-            cursor: pointer;
-        }
-        .sucesso {
-            color: green;
-            border: 1px solid green;
-            padding: 10px;
-            margin-bottom: 10px;
-        }
-        .erro {
-            color: red;
-            border: 1px solid red;
-            padding: 10px;
-            margin-bottom: 10px;
-        }
-    </style>
-</head>
-<body>
-    <nav>
-        <a href="{{ url_for('professor_home') }}">Escola Virtual</a>
-        <a href="{{ url_for('professor_home') }}">Início</a>
-        <a href="{{ url_for('logout') }}">Sair</a>
-    </nav>
+{% extends "base.html" %}
+{% block title %}Lançar Notas{% endblock %}
 
-    <h1>Adicionar Notas</h1>
+{% block content %}
+<style>
+body { 
+    background-color: #fff8e1; 
+    font-family: 'Comic Sans MS'; 
+    text-align: center; 
+}
+form { 
+    display: inline-block; 
+    text-align: left; 
+    background-color: #fff3e0;
+    padding: 20px; 
+    border: 2px solid #fbc02d; 
+    border-radius: 10px; 
+    margin-top: 20px;
+}
+label { 
+    font-weight: bold; 
+    color: #f57f17; 
+}
+select, input { 
+    width: 100%; 
+    padding: 5px; 
+    margin-bottom: 10px; 
+    border: 1px solid #fbc02d; 
+    border-radius: 5px;
+}
+button { 
+    background-color: #fbc02d; 
+    color: white; 
+    border: none; 
+    padding: 8px 15px; 
+    cursor: pointer; 
+    font-weight: bold;
+    border-radius: 10px;
+}
+button:hover { background-color: #f57f17; }
+.alert { 
+    color: #f57f17; 
+    font-weight: bold; 
+    margin-bottom: 10px; 
+}
+ul { 
+    list-style-type: none; 
+    padding: 0; 
+    width: 60%; 
+    margin: 20px auto; 
+}
+li { 
+    padding: 8px; 
+    margin-bottom: 5px; 
+    border: 1px solid #fbc02d; 
+    border-radius: 5px; 
+    background-color: #fff3e0;
+}
+h2, h3 { color: #f57f17; }
+</style>
 
-    <!-- condicoes de sucesso e erro ao adicionar nota ao aluno -->
-    {% if mensagem %}
-        <div class="sucesso">{{ mensagem }}</div>
-    {% endif %}
+<h2>Lançar Notas</h2>
 
-    {% if erro %}
-        <div class="erro">{{ erro }}</div>
-    {% endif %}
+{% if mensagem %}
+<div class="alert">{{ mensagem }}</div>
+{% endif %}
 
-    <!-- opcao de selecionar aluno -->
-    <form method="POST">
-        <label for="aluno">Aluno:</label>
-        <select name="aluno" id="aluno" required>
-            <option value="">Selecione um aluno</option>
-            {% for aluno in alunos_disponiveis %}
-                <option value="{{ aluno }}">{{ aluno }}</option>
-            {% endfor %}
-        </select>
-<!-- opcao de adicionar as notas de 0 a 10 -->
-        <label for="nota">Nota (0 a 10):</label>
-        <input type="number" name="nota" id="nota" step="0.1" min="0" max="10" required>
+<form method="POST">
+    <label>Selecione o aluno:</label>
+    <select name="aluno">
+        {% for aluno in alunos %}
+        <option value="{{ aluno }}">{{ aluno }}</option>
+        {% endfor %}
+    </select>
 
-        <button type="submit">Adicionar Nota</button>
-    </form>
-</body>
-</html>
+    <label>Nota:</label>
+    <input type="number" step="0.1" name="nota" required>
+
+    <button type="submit">Salvar Nota</button>
+</form>
+
+<h3>Notas atuais</h3>
+<ul>
+    {% for aluno, lista in notas.items() %}
+    <li>
+        <strong>{{ aluno }}:</strong> {{ lista }}
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}
