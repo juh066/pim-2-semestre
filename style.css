@@ -1,0 +1,128 @@
+/* === Tema Escolar Clean & Fofo === */
+
+body {
+    background-color: #fff8e1; /* Mais próximo do amarelo fofo usado nos templates */
+    font-family: 'Poppins', sans-serif;
+    color: #444;
+    text-align: center; /* Centraliza conteúdo principal */
+    margin: 0;
+    padding: 0;
+}
+
+/* Navbar */
+.navbar {
+    background: linear-gradient(90deg, #a5b4fc, #c4b5fd);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.navbar-brand {
+    font-weight: 600;
+    font-size: 1.3rem;
+}
+
+.navbar .btn {
+    border-radius: 20px;
+    font-weight: 500;
+}
+
+/* Containers */
+.container {
+    background: white;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    margin-bottom: 2rem;
+}
+
+/* Títulos */
+h1, h2, h3, h4 {
+    color: #f57f17; /* Combina com os tons laranja/dourado do tema */
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+/* Botões */
+.btn-primary {
+    background-color: #fbc02d;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    transition: 0.3s;
+}
+.btn-primary:hover {
+    background-color: #f57f17;
+}
+
+.btn-success {
+    background-color: #a78bfa;
+    color: white;
+    border: none;
+    border-radius: 20px;
+}
+.btn-success:hover {
+    background-color: #8b5cf6;
+}
+
+.btn-info {
+    background-color: #bae6fd;
+    color: #0369a1;
+    border: none;
+    border-radius: 20px;
+}
+.btn-info:hover {
+    background-color: #7dd3fc;
+}
+
+.btn-warning {
+    background-color: #fcd34d;
+    color: #444;
+    border: none;
+    border-radius: 20px;
+}
+
+/* Inputs */
+input, select, textarea {
+    border-radius: 12px !important;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+}
+
+/* Listas */
+.list-group-item {
+    border: none;
+    background-color: #fff3e0;
+    border-radius: 10px;
+    margin-bottom: 6px;
+    text-align: left;
+}
+
+/* Alertas */
+.alert {
+    border-radius: 12px;
+    text-align: center;
+}
+
+/* Tabelas */
+.table {
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.table th {
+    background-color: #fdd835;
+    color: #312e81;
+}
+
+.table td {
+    background-color: #fff8e1;
+    color: #444;
+}
+
+/* Footer */
+footer {
+    margin-top: 40px;
+    text-align: center;
+    color: #999;
+    font-size: 0.9rem;
+}
